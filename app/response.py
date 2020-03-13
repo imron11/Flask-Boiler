@@ -6,7 +6,6 @@ def ok(values, message):
         'values': values,
         'message': message
     }
-
     return make_response(jsonify(res)), 200
 
 
@@ -15,5 +14,12 @@ def badRequest(values, message):
         'values': values,
         'message': message
     }
-
     return make_response(jsonify(res)), 400
+
+
+def userExist(values, message):
+    res = {
+        'values': values,
+        'message': message
+    }
+    return make_response(jsonify(res)), 409

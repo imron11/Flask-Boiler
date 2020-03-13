@@ -40,6 +40,15 @@ def sendEmail(name, email):
     mail.send(msg)
 
 
+def checkUser(email):
+    try:
+        users = Users.query.filter_by(email=email).first()
+
+        return users
+    except Exception as e:
+        print(e)
+
+
 @jwt_required
 def store():
     try:
@@ -49,8 +58,12 @@ def store():
 
         users = Users(name=name, email=email)
         users.setPassword(password)
-        db.session.add(users)
-        db.session.commit()
+
+        if not checkUser(email):
+            db.session.add(users)
+            db.session.commit()
+        else:
+            return response.userExist('', 'User already exist')
 
         p = Process(target=sendEmail, args=(name, email))
         p.start()
